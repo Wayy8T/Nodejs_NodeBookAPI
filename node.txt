@@ -1,0 +1,8 @@
+Câu lệnh npm i express dotenv cors nodemon dùng để cài đặt bốn gói thư viện vào dự án Node.js thông qua npm (Node Package Manager)
+
+express: Một framework web nhanh và tối giản cho Node.js, dùng để xây dựng các ứng dụng web và API. ( bên thứ 3 )
+dotenv: Giúp quản lý các biến môi trường dễ dàng bằng cách lưu trữ chúng trong một file .env.
+cors: Middleware cho phép hoặc từ chối các yêu cầu từ nguồn khác (Cross-Origin Resource Sharing), hữu ích khi xây dựng API mà client và server có nguồn gốc khác nhau.
+nodemon: Công cụ giúp tự động khởi động lại ứng dụng Node.js khi có thay đổi trong mã nguồn, rất tiện lợi trong quá trình phát triển.
+
+babel: Vừa dùng module ( ES6 ) được vừa có thể dùng "require" trong commonJs được, require dùng để nạp module vào ứng dụng để có thể sử dụng cahcs chức năng của module đó 
