@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon --exec babel-node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -18,8 +19,8 @@
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.8",
     "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
     "@babel/preset-env": "^7.25.3",
     "sequelize-cli": "^6.6.2"
   }

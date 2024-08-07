@@ -1,11 +1,14 @@
-const express = require('express')
-const cors = require('cors')
+// const express = require('express')
+import express from 'express'
+// const cors = require('cors')
+import cors from 'cors'
 // .config() để có thể sử dụng được file môi trường env ( cụ thể là nó sẽ nạp các biến môi trường từ file.env vào process.env )
 require('dotenv').config()
 // inject class DBconnection de connect database
 require('./DBconnection.js')
 // import routes
-const initToutes = require('./src/routes/index.js')
+// const initToutes = require('./src/routes/index.js')
+import initToutes from './src/routes/index.js'
 // create app
 const app = express()
 
