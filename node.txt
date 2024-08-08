@@ -6,3 +6,6 @@ cors: Middleware cho phép hoặc từ chối các yêu cầu từ nguồn khác
 nodemon: Công cụ giúp tự động khởi động lại ứng dụng Node.js khi có thay đổi trong mã nguồn, rất tiện lợi trong quá trình phát triển.
 
 babel: Vừa dùng module ( ES6 ) được vừa có thể dùng "require" trong commonJs được, require dùng để nạp module vào ứng dụng để có thể sử dụng cahcs chức năng của module đó 
+Package: Joi, error, babel...
+
+middleware: chứa các hàm xử lý trước khi chuyển qua service 
