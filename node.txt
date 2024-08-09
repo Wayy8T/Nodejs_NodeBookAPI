@@ -9,3 +9,6 @@ babel: Vừa dùng module ( ES6 ) được vừa có thể dùng "require" trong
 Package: Joi, error, babel...
 
 middleware: chứa các hàm xử lý trước khi chuyển qua service 
+    + Handle error: Giải quyết lỗi 
+    + Verify token xác thực token truyền lên có hết hạn ko 
+    + verify role: Check role có hợp lệ không 

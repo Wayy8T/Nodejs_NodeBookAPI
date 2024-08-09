@@ -23,6 +23,7 @@ export const register = ({ email, password }) => new Promise(async (resolve, rej
                 email,
                 password: hashPassword(password)
             }
+
         })
 
         // console.log(respone[0].email)
@@ -32,7 +33,7 @@ export const register = ({ email, password }) => new Promise(async (resolve, rej
         resolve({
             err: respone[1] ? 0 : 1,
             mes: respone[1] ? 'Register is successfully' : "Email is used",
-            'access_token': `Bearer ${token}`
+            'access_token': token ? `Bearer ${token}` : token
         })
         resolve({
             err: 0,
