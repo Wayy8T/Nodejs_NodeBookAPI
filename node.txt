@@ -12,3 +12,5 @@ middleware: chứa các hàm xử lý trước khi chuyển qua service
     + Handle error: Giải quyết lỗi 
     + Verify token xác thực token truyền lên có hết hạn ko 
     + verify role: Check role có hợp lệ không 
+- error npm: Thư viện để bắt lỗi
+- Joi: Thư viện để validate email, pass
