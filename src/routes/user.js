@@ -7,7 +7,7 @@ const router = express.Router()
 
 // private route
 router.use(verifyToken)
-router.use(isAdmin)
+// router.use(isAdmin)
 router.get('/', controller.getCurrent)
 
 module.exports = router
