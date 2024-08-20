@@ -23,4 +23,4 @@ GET http://localhost:5000/api/v1/user/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZV9jb2RlIjoiUjIiLCJpYXQiOjE3MjM0NDI5NDEsImV4cCI6MTcyMzg3NDk0MX0.-6IFWksfTgfUuU6RGSxg8cpW4dXNNxYlMRkF17lzpVo
 
 ###
-GET http://localhost:5000/api/v1/insert/
+POST http://localhost:5000/api/v1/insert/

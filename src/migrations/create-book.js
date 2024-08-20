@@ -23,6 +23,9 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT
             },
+            category_code: {
+                type: Sequelize.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: 'TIMESTAMP',
