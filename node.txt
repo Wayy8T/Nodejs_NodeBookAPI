@@ -14,3 +14,6 @@ middleware: chứa các hàm xử lý trước khi chuyển qua service
     + verify role: Check role có hợp lệ không 
 - error npm: Thư viện để bắt lỗi
 - Joi: Thư viện để validate email, pass
+
+middleware npm multer: Dùng để up ảnh 
+npm uuid: Tạo id unique

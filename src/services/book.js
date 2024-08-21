@@ -1,5 +1,7 @@
+import { defaults } from 'joi'
 import db from '../models'
 import { Op } from 'sequelize'
+import { v4 as generateId } from 'uuid'
 // CRUD voi book
 export const getBooks = ({ page, limit, order, name, available, ...query }) => new Promise(async (resolve, reject) => {
     try {
@@ -24,7 +26,17 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) => n
         // offset: Lượt bỏ ( bù ) bao nhiêu để trỏ đúng vào cuốn sách đầu tiên của trang đó
         const respone = await db.Book.findAndCountAll({
             where: query,
-            ...queries
+            ...queries,
+            attributes: {
+                exclude: ['category_code']
+            },
+            include: [
+                {
+                    // phuong phap association
+                    // exclude: loại bỏ ko lấy những attribute trong mảng
+                    model: db.Category, attributes: { exclude: ['createdAt', 'updatedAt'] }, as: 'category_data'
+                }
+            ]
         })
 
         resolve({
@@ -36,6 +48,35 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) => n
             err: 0,
             mes: 'register service'
         })
+        console.log('after resolve')
+    } catch (error) {
+        reject(error)
+    }
+})
+
+// CREATE 
+
+export const createNewBook = (body) => new Promise(async (resolve, reject) => {
+    try {
+        // nnếu sách đó đã có rồi thì ko tạo
+        // nếu tên sách chưa có thì tạo mới bang findOrCreate
+        // findOrCreate tìm trước rồi mới tạo
+
+        // neu title = body.title thi ko tao nua, nguoc lai tao thei defaults 
+        const respone = await db.Book.findOrCreate({
+            // findOrCreate tra ve mang co 2 phan tu: Mang va boolean
+            where: { title: body.title },
+            defaults: {
+                ...body,
+                id: generateId()
+            }
+        })
+
+        resolve({
+            err: respone[1] ? 0 : 1,
+            mes: respone[1] ? 'Created' : "Cannot create new book"
+        })
+
         console.log('after resolve')
     } catch (error) {
         reject(error)
