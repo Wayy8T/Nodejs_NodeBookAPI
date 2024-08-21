@@ -20,7 +20,14 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5000/api/v1/user/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZV9jb2RlIjoiUjIiLCJpYXQiOjE3MjM0NDI5NDEsImV4cCI6MTcyMzg3NDk0MX0.-6IFWksfTgfUuU6RGSxg8cpW4dXNNxYlMRkF17lzpVo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZV9jb2RlIjoiUjIiLCJpYXQiOjE3MjQyMTIzMDEsImV4cCI6MTcyNDY0NDMwMX0.TBfAUfz8hJ9l4ysGMG3Ha3qvy5PfLOMHb62izgdii9A
 
 ###
 POST http://localhost:5000/api/v1/insert/
+
+
+###
+GET http://localhost:5000/api/v1/book/?order[]=price&order[]=DESC&limit=2&page=2&name=of
+
+###
+GET http://localhost:5000/api/v1/book/?available[]=5&available[]=10
