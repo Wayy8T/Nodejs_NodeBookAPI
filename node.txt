@@ -17,3 +17,15 @@ middleware: chứa các hàm xử lý trước khi chuyển qua service
 
 middleware npm multer: Dùng để up ảnh 
 npm uuid: Tạo id unique
+
+library multer: Multer là một middleware cho Node.js, được sử dụng để xử lý các tệp tin (file) được tải lên (upload) từ các form HTML. Thư viện này rất phổ biến khi bạn cần xử lý dữ liệu từ các form có chứa file (như hình ảnh, tài liệu, video, v.v.) và lưu trữ chúng trên server.
+Thư viện multer lưu trên ổ cứng hoặc storage, nếu muốn lưu trên cloud thì dùng thư viện multer storage cloudinary 
+multer storage cloudinary: Thiết lập 1 storage trên cloud cho multer 
+Tải thêm thư viện: Cloudinary để lưu ảnh 
+
+
+
+
+* CHƯA TỐI ƯU 
+- Chưa tối ưu việc up ảnh lên cloudinary 
+    + Up lỗi > xóa => lỗi ko chạy vòa hàm up sẽ đỡ tốn dung lượng + thời gian chạy 

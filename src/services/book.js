@@ -2,6 +2,8 @@ import { defaults } from 'joi'
 import db from '../models'
 import { Op } from 'sequelize'
 import { v4 as generateId } from 'uuid'
+import cloudinary from 'cloudinary'
+
 // CRUD voi book
 export const getBooks = ({ page, limit, order, name, available, ...query }) => new Promise(async (resolve, reject) => {
     try {
@@ -56,7 +58,7 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) => n
 
 // CREATE 
 
-export const createNewBook = (body) => new Promise(async (resolve, reject) => {
+export const createNewBook = (body, fileDataImage) => new Promise(async (resolve, reject) => {
     try {
         // nnếu sách đó đã có rồi thì ko tạo
         // nếu tên sách chưa có thì tạo mới bang findOrCreate
@@ -77,8 +79,14 @@ export const createNewBook = (body) => new Promise(async (resolve, reject) => {
             mes: respone[1] ? 'Created' : "Cannot create new book"
         })
 
-        console.log('after resolve')
+        // lỗi thì xóa ảnh
+        if (fileDataImage && !respone[1]) {
+            cloudinary.v2.uploader.destroy(fileDataImage.filename)
+            console.log('Image is deleted')
+        }
     } catch (error) {
         reject(error)
+        if (fileDataImage)
+            cloudinary.v2.uploader.destroy(fileDataImage.filename)
     }
 })

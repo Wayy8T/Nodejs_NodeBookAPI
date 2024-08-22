@@ -2,6 +2,7 @@ import * as service from "../services";
 import { interalServerError, badRequest } from "../middleware/handle_error"
 import { title, price, available, image, category_code } from "../helpers/joi_schema";
 import Joi from "joi";
+import cloudinary from 'cloudinary'
 
 
 export const getBooks = async (req, resp) => {
@@ -27,15 +28,24 @@ export const createNewBooks = async (req, resp) => {
         //         mes: 'Missing input'
         //     })
         // }
+        // get image in cloudinary 
+        // file: 1 anhr, files: 2 image tro len
+        const fileDataImage = req.file
         // validate
-        const { error } = Joi.object({ title, price, available, image, category_code }).validate(req.body)
-        console.log('validate')
+        const { error } = Joi.object({ title, price, available, image, category_code }).validate({ ...req.body, image: fileDataImage?.path })
         // details là một thuộc tính của đối tượng error được trả về bởi phương thức validate của Joi.
-        if (error) return badRequest(error.details[0].message, resp)
-        console.log('validate1')
-        const response = await service.createNewBook(req.body);
+        if (error) {
+            // nếu có lỗi thì xóa ảnh trên cloudinary rồi return 
+            if (fileDataImage) {
+                cloudinary.v2.uploader.destroy(fileDataImage.filename)
+            }
 
-        console.log('validate3')
+            return badRequest(error.details[0].message, resp)
+        }
+        // truyền path image 
+        req.body.image = fileDataImage.path;
+
+        const response = await service.createNewBook(req.body, fileDataImage);
 
         return resp.status(200).json(response)
     } catch (error) {
