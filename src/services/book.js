@@ -1,8 +1,9 @@
 import { defaults } from 'joi'
 import db from '../models'
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import { v4 as generateId } from 'uuid'
 import cloudinary from 'cloudinary'
+import { raw } from 'mysql2'
 
 // CRUD voi book
 export const getBooks = ({ page, limit, order, name, available, ...query }) => new Promise(async (resolve, reject) => {
@@ -42,7 +43,6 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) => n
             mes: respone ? 'Have a respone' : "Cannot found books",
             bookData: respone
         })
-        console.log('after resolve')
     } catch (error) {
         reject(error)
     }
@@ -63,6 +63,7 @@ export const createNewBook = (body, fileDataImage) => new Promise(async (resolve
                 id: generateId()
             }
         })
+        console.log(fileDataImage)
         resolve({
             err: respone[1] ? 0 : 1,
             mes: respone[1] ? 'Created' : "Cannot create new book"
@@ -70,7 +71,6 @@ export const createNewBook = (body, fileDataImage) => new Promise(async (resolve
         // lỗi thì xóa ảnh
         if (fileDataImage && !respone[1]) {
             cloudinary.v2.uploader.destroy(fileDataImage.filename)
-            console.log('Image is deleted')
         }
     } catch (error) {
         reject(error)
@@ -99,7 +99,6 @@ export const updateBook = ({ bookId, ...body }, fileDataImage) => new Promise(as
         // lỗi thì xóa ảnh
         if (fileDataImage && respone[0] === 0) {
             cloudinary.v2.uploader.destroy(fileDataImage.filename)
-            console.log('Image is deleted')
         }
     } catch (error) {
         reject(error)
@@ -108,42 +107,42 @@ export const updateBook = ({ bookId, ...body }, fileDataImage) => new Promise(as
     }
 })
 
-
-
-function deleteImageCloudinary(imageUrl) {
-    // Extract the public_id from the URL
-    console('delete image1')
-    const urlParts = imageUrl.split('/');
-    console('delete image2')
-    const publicIdWithExtension = urlParts.slice(-2).join('/'); // 'v1629309123/sample_image.jpg'
-    console('delete image3')
-    const publicId = publicIdWithExtension.replace(/\.[^/.]+$/, ""); // Remove the file extension
-
-    // Delete the image
-    cloudinary.uploader.destroy(publicId, function (error, result) {
-        if (error) {
-            console.error('Error deleting image:', error);
-        } else {
-            console.log('Image deleted successfully:', result);
-        }
+function deleteImageCloudinary(imageUrls) {
+    imageUrls.forEach((imageUrl) => {
+        // Extract the public_id from the URL
+        const urlParts = imageUrl.image.split('/');
+        //array.slice(start, end);
+        const publicIdWithExtension = urlParts.slice(-2).join('/'); // 'v1629309123/sample_image.jpg'
+        const publicId = publicIdWithExtension.replace(/\.[^/.]+$/, ""); // Remove the file extension
+        // Delete the image
+        cloudinary.uploader.destroy(publicId, function (error, result) {
+            if (error) {
+                console.error('Error deleting image:', error);
+            } else {
+                console.log('Image deleted successfully:', result);
+            }
+        });
     });
+
 }
 
 // DELETE 
-export const deletedBook = ({ bookId, ...body }) => new Promise(async (resolve, reject) => {
+export const deletedBook = (query) => new Promise(async (resolve, reject) => {
     try {
-        const getOneBook = await db.Book.findOne({
-            where: { id: bookId },
-        })
-        console.log('get Book')
-        console.log(getOneBook)
-        const image = getOneBook.image
-        const respone = await db.Book.destroy({ where: { id: bookId } });
-        // deleteBook is now in the database
+        const image = await db.Book.findAll({
+            where: {
+                id: query.bookIds
+            },
+            raw: true
+        });
+        console.log(image)
+        const respone = await db.Book.destroy({
+            where: { id: query.bookIds }
+        });
         resolve({
             // err: countDelete > 0 ? deleteImageCloudinary(body.path) : 1,
             err: respone > 0 ? deleteImageCloudinary(image) : 1,
-            mes: respone > 0 ? `${respone} book is deleted` : "BookId not found"
+            mes: respone > 0 ? `${respone} book(s) deleted` : "BookIds not found"
         })
     } catch (error) {
         reject(error)

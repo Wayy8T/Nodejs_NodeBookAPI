@@ -1,6 +1,6 @@
 import * as service from "../services";
 import { interalServerError, badRequest } from "../middleware/handle_error"
-import { title, price, available, image, category_code, bookId } from "../helpers/joi_schema";
+import { title, price, available, image, category_code, bookId, bookIds } from "../helpers/joi_schema";
 import Joi from "joi";
 import cloudinary from 'cloudinary'
 
@@ -82,12 +82,11 @@ export const updateBook = async (req, resp) => {
 // DELETE
 export const deletedBook = async (req, resp) => {
     try {
-        const { error } = Joi.object({ bookId }).validate({ bookId: req.query.bookId })
+        const { error } = Joi.object({ bookIds }).validate({ bookIds: req.query.bookIds })
         if (error) {
             return badRequest(error.details[0].message, resp)
         }
         const response = await service.deletedBook(req.query);
-        console.log('BookID DELETE3')
         return resp.status(200).json(response)
     } catch (error) {
         return interalServerError(req, resp)
