@@ -1,6 +1,6 @@
 import * as service from "../services";
 import { interalServerError, badRequest } from "../middleware/handle_error"
-import { title, price, available, image, category_code, bookId, bookIds } from "../helpers/joi_schema";
+import { title, price, available, image, category_code, bookId, bookIds, description } from "../helpers/joi_schema";
 import Joi from "joi";
 import cloudinary from 'cloudinary'
 
@@ -30,7 +30,7 @@ export const createNewBooks = async (req, resp) => {
         const fileDataImage = req.file
 
         // validate
-        const { error } = Joi.object({ title, price, available, image, category_code }).validate({ ...req.body, image: fileDataImage?.path })
+        const { error } = Joi.object({ title, price, available, image, category_code, description }).validate({ ...req.body, image: fileDataImage?.path })
         // details là một thuộc tính của đối tượng error được trả về bởi phương thức validate của Joi.
         if (error) {
             // nếu có lỗi thì xóa ảnh trên cloudinary rồi return 

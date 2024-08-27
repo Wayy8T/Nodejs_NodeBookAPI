@@ -24,10 +24,13 @@ export const notFound = (req, resp) => {
     })
 }
 
-export const notAuth = (err, resp) => {
+export const notAuth = (err, resp, isExpire) => {
     const error = createError.Unauthorized(err)
     return resp.status(error.status).json({
-        err: 1,
+        // isExpire ( da het han ) thi tra ve loi 2 va nguoc lai
+        // 2 là lỗi chung liên quan đến việc hết hạn 
+        // 1 Chỉ định những loại lỗi khác
+        err: isExpire ? 2 : 1,
         mes: error.message
     })
 }

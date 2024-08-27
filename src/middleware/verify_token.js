@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import { notAuth } from './handle_error'
 
 const verifyToken = (req, resp, next) => {
@@ -12,9 +12,13 @@ const verifyToken = (req, resp, next) => {
     // process.env.JWT_SECRET
     // and callback function with two parameter (err, user), if there is no error then convert the token to the original object 
     jwt.verify(accessToken, process.env.JWT_SECRET, (err, user) => {
+        // idChecked check token het han hay chua
         if (err) {
-            return notAuth('access token may be expired or invalid', resp)
+            const isChecked = err instanceof TokenExpiredError
+            if (!isChecked) return notAuth('access token invalid', resp, isChecked)
+            if (isChecked) return notAuth('access token may be expired', resp, isChecked)
         }
+
         req.user = user
         next()
     })
